@@ -1,0 +1,54 @@
+<p style="color: green"><%= notice %></p>
+
+<h1><%= @restaurant.name %></h1>
+<%= render @restaurant %>
+
+
+<h2>Items</h2>
+<ul>
+  <% @items.each do |item| %>
+    <li>
+      <%= item.name %>:  <%= item.price %> $
+      <%= check_box_tag "selected_items[]", item.id, false, class: "item-checkbox", data: { price: item.price } %>
+    </li>
+  <% end %>
+</ul>
+
+<p>Total Price: <span id="total-price">0</span>$</p>
+(the sum only works after reloading the page)
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+  const checkboxes = document.querySelectorAll(".item-checkbox");
+  const totalPriceElement = document.getElementById("total-price");
+  let totalPrice = 0;
+    // Reset checkboxes on page load
+  checkboxes.forEach((checkbox) => {
+    checkbox.checked = false;
+  });
+
+  checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      const checkedCheckboxes = document.querySelectorAll(".item-checkbox:checked");
+      totalPrice = 0;
+
+      checkedCheckboxes.forEach((checkedCheckbox) => {
+        const itemPrice = parseInt(checkedCheckbox.dataset.price, 10);
+        totalPrice += itemPrice;
+      });
+
+      totalPriceElement.innerText = totalPrice;
+    });
+  });
+});
+</script>
+
+<div>
+  <%= link_to "Edit this restaurant", edit_restaurant_path(@restaurant) %> |
+  <%= link_to "Back to restaurants", restaurants_path %>
+
+  <%= button_to "Destroy this restaurant", @restaurant, method: :delete %>
+</div>

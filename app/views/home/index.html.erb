@@ -1,0 +1,15 @@
+<h1>Top Restaurants</h1>
+
+<ul>
+  <% @restaurants.each do |restaurant| %>
+    <li>
+      <h3><%= restaurant.name %></h3>
+      <p>Address: <%= restaurant.address %></p>
+      <p>Number of Items: <%= restaurant.items.count %></p>
+      <%= link_to "See more", "#", class: "see-more-button", data: { restaurant_id: restaurant.id } %>
+      <div class="dishes-container"></div>
+    </li>
+  <% end %>
+</ul>
+
+
